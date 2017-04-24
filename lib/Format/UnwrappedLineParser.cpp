@@ -1919,6 +1919,11 @@ void UnwrappedLineParser::parseObjCInterfaceOrImplementation() {
   if (FormatTok->Tok.is(tok::less))
     parseObjCProtocolList();
 
+  // After a protocol list, we can have a category (Obj-C generic
+  // category).
+  if (FormatTok->Tok.is(tok::l_paren))
+    parseParens();
+
   if (FormatTok->Tok.is(tok::l_brace)) {
     if (Style.BraceWrapping.AfterObjCDeclaration)
       addUnwrappedLine();

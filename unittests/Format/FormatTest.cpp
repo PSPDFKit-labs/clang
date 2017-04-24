@@ -3376,6 +3376,15 @@ TEST_F(FormatTest, FormatInterfaceAnnotationMacro) {
       "@end", Style);
 }
 
+TEST_F(FormatTest, FormatGenericCategory) {
+  FormatStyle Style = getLLVMStyle();
+  Style.SpaceBeforeParens = FormatStyle::SBPO_ControlStatementsAndGenerics;
+  verifyFormat(
+      "@interface NSHashTable <ObjectType> (MYFoundation)\n"
+      "- (void)pspdf_addObjectsFromArray:(nonnull NSArray<ObjectType> *)array;\n"
+      "@end", Style);
+}
+
 //===----------------------------------------------------------------------===//
 // Line break tests.
 //===----------------------------------------------------------------------===//

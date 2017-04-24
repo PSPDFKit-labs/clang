@@ -188,6 +188,8 @@ struct ScalarEnumerationTraits<FormatStyle::SpaceBeforeParensOptions> {
     IO.enumCase(Value, "Never", FormatStyle::SBPO_Never);
     IO.enumCase(Value, "ControlStatements",
                 FormatStyle::SBPO_ControlStatements);
+    IO.enumCase(Value, "ControlStatementsAndGenerics",
+                FormatStyle::SBPO_ControlStatementsAndGenerics);
     IO.enumCase(Value, "Always", FormatStyle::SBPO_Always);
 
     // For backward compatibility.
@@ -323,7 +325,8 @@ template <> struct MappingTraits<FormatStyle> {
     IO.mapOptional("MaxEmptyLinesToKeep", Style.MaxEmptyLinesToKeep);
     IO.mapOptional("NamespaceIndentation", Style.NamespaceIndentation);
     IO.mapOptional("ObjCBlockIndentWidth", Style.ObjCBlockIndentWidth);
-    IO.mapOptional("ObjCAvoidBreaksForInlineBlocks", Style.ObjCAvoidBreaksForInlineBlocks);
+    IO.mapOptional("ObjCAvoidBreaksForInlineBlocks",
+                   Style.ObjCAvoidBreaksForInlineBlocks);
     IO.mapOptional("ObjCSpaceAfterProperty", Style.ObjCSpaceAfterProperty);
     IO.mapOptional("ObjCSpaceBeforeProtocolList",
                    Style.ObjCSpaceBeforeProtocolList);
@@ -340,7 +343,8 @@ template <> struct MappingTraits<FormatStyle> {
     IO.mapOptional("ReflowComments", Style.ReflowComments);
     IO.mapOptional("SortIncludes", Style.SortIncludes);
     IO.mapOptional("SpaceAfterCStyleCast", Style.SpaceAfterCStyleCast);
-    IO.mapOptional("SpaceAfterTemplateKeyword", Style.SpaceAfterTemplateKeyword);
+    IO.mapOptional("SpaceAfterTemplateKeyword",
+                   Style.SpaceAfterTemplateKeyword);
     IO.mapOptional("SpaceBeforeAssignmentOperators",
                    Style.SpaceBeforeAssignmentOperators);
     IO.mapOptional("SpaceBeforeParens", Style.SpaceBeforeParens);
@@ -918,7 +922,6 @@ public:
   }
 
 private:
-
   static bool inputUsesCRLF(StringRef Text) {
     return Text.count('\r') * 2 > Text.count('\n');
   }

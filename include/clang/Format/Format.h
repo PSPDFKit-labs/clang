@@ -569,6 +569,9 @@ struct FormatStyle {
     /// Put a space before opening parentheses only after control statement
     /// keywords (``for/if/while...``).
     SBPO_ControlStatements,
+    /// Put a space before opening parenthesis only after control statement
+    /// keywords and generics.
+    SBPO_ControlStatementsAndGenerics,
     /// Always put a space before opening parentheses, except when it's
     /// prohibited by the syntax rules (in function-like macro definitions) or
     /// when determined by other style rules (after unary operators, opening
