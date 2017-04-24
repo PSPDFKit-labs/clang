@@ -31,7 +31,8 @@ FormatTokenLexer::FormatTokenLexer(const SourceManager &SourceMgr, FileID ID,
       Style(Style), IdentTable(getFormattingLangOpts(Style)),
       Keywords(IdentTable), Encoding(Encoding), FirstInLineIndex(0),
       FormattingDisabled(false), MacroBlockBeginRegex(Style.MacroBlockBegin),
-      MacroBlockEndRegex(Style.MacroBlockEnd) {
+      MacroBlockEndRegex(Style.MacroBlockEnd),
+      MacroInterfaceAnnotationRegex(Style.MacroInterfaceAnnotation) {
   Lex.reset(new Lexer(ID, SourceMgr.getBuffer(ID), SourceMgr,
                       getFormattingLangOpts(Style)));
   Lex->SetKeepWhitespaceMode(true);
@@ -570,6 +571,8 @@ FormatToken *FormatTokenLexer::getNextToken() {
         FormatTok->Type = TT_MacroBlockBegin;
       } else if (MacroBlockEndRegex.match(Text)) {
         FormatTok->Type = TT_MacroBlockEnd;
+      } else if (MacroInterfaceAnnotationRegex.match(Text)) {
+        FormatTok->Type = TT_MacroInterfaceAnnotation;
       }
     }
   }

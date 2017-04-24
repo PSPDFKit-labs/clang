@@ -102,6 +102,7 @@ private:
 
   llvm::Regex MacroBlockBeginRegex;
   llvm::Regex MacroBlockEndRegex;
+  llvm::Regex MacroInterfaceAnnotationRegex;
 
   void readRawToken(FormatToken &Tok);
 

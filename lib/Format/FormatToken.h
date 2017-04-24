@@ -62,6 +62,7 @@ namespace format {
   TYPE(LineComment) \
   TYPE(MacroBlockBegin) \
   TYPE(MacroBlockEnd) \
+  TYPE(MacroInterfaceAnnotation) \
   TYPE(ObjCBlockLBrace) \
   TYPE(ObjCBlockLParen) \
   TYPE(ObjCDecl) \

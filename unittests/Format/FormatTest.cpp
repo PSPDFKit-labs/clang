@@ -3363,6 +3363,19 @@ TEST_F(FormatTest, FormatBeginBlockEndMacros) {
                "FOO_END(Baz)", Style);
 }
 
+TEST_F(FormatTest, FormatInterfaceAnnotationMacro) {
+  FormatStyle Style = getLLVMStyle();
+  Style.MacroInterfaceAnnotation = "MY_CLASS_AVAILABLE";
+  Style.ColumnLimit = 80;
+  verifyFormat(
+      "MY_CLASS_AVAILABLE @interface MYContainerViewController\n"
+      "    : MYBaseViewController<MYStyleable>\n"
+      "- (instancetype)initWithControllers:\n"
+      "                    (nullable NSArray<__kindof UIViewController *> *)controllers\n"
+      "                             titles:(nullable NSArray<NSString *> *)titles;\n"
+      "@end", Style);
+}
+
 //===----------------------------------------------------------------------===//
 // Line break tests.
 //===----------------------------------------------------------------------===//

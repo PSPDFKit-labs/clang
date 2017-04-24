@@ -881,6 +881,11 @@ void UnwrappedLineParser::parseStructuralElement() {
     }
     break;
   case tok::identifier:
+    if (FormatTok->is(TT_MacroInterfaceAnnotation)) {
+      nextToken();
+      parseStructuralElement();
+      return;
+    }
     if (FormatTok->is(TT_ForEachMacro)) {
       parseForOrWhileLoop();
       return;

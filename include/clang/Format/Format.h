@@ -481,6 +481,9 @@ struct FormatStyle {
   /// \brief A regular expression matching macros that end a block.
   std::string MacroBlockEnd;
 
+  /// \brief A regular expression matching annotations for Obj-C @interfaces.
+  std::string MacroInterfaceAnnotation;
+
   /// \brief The maximum number of consecutive empty lines to keep.
   unsigned MaxEmptyLinesToKeep;
 
@@ -691,6 +694,7 @@ struct FormatStyle {
                R.KeepEmptyLinesAtTheStartOfBlocks &&
            MacroBlockBegin == R.MacroBlockBegin &&
            MacroBlockEnd == R.MacroBlockEnd &&
+           MacroInterfaceAnnotation == R.MacroInterfaceAnnotation &&
            MaxEmptyLinesToKeep == R.MaxEmptyLinesToKeep &&
            NamespaceIndentation == R.NamespaceIndentation &&
            ObjCAvoidBreaksForInlineBlocks == R.ObjCAvoidBreaksForInlineBlocks &&
