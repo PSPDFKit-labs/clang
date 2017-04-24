@@ -43,6 +43,22 @@ static unsigned getLengthToNextOperator(const FormatToken &Tok) {
   return Tok.NextOperator->TotalLength - Tok.TotalLength;
 }
 
+// Returns the length of everything up to the first possible line break after
+// the ), ], } or > matching \c Tok, or the first token with children.
+static unsigned getLengthToLineTerminator(const FormatToken &Tok) {
+  if (!Tok.MatchingParen)
+    return 0;
+  FormatToken *End = Tok.MatchingParen;
+  FormatToken *Cursor = Tok.Next;
+  while (Cursor->Children.size() == 0 && Cursor != End) {
+    Cursor = Cursor->Next;
+  }
+  while (Cursor->Next && !Cursor->Next->CanBreakBefore) {
+    Cursor = Cursor->Next;
+  }
+  return Cursor->TotalLength - Tok.TotalLength + 1;
+}
+
 // Returns \c true if \c Tok is the "." or "->" of a call and starts the next
 // segment of a builder type call.
 static bool startsSegmentOfBuilderTypeCall(const FormatToken &Tok) {
@@ -562,7 +578,7 @@ unsigned ContinuationIndenter::addTokenOnNewLine(LineState &State,
       Style.Language != FormatStyle::LK_Cpp &&
       Current.is(tok::r_brace) && State.Stack.size() > 1 &&
       State.Stack[State.Stack.size() - 2].NestedBlockInlined;
-  if (!NestedBlockSpecialCase)
+  if (!NestedBlockSpecialCase && !Style.ObjCAvoidBreaksForInlineBlocks)
     for (unsigned i = 0, e = State.Stack.size() - 1; i != e; ++i)
       State.Stack[i].BreakBeforeParameter = true;
 
@@ -982,8 +998,10 @@ void ContinuationIndenter::moveStatePastScopeOpener(LineState &State,
       if (Style.ColumnLimit) {
         // If this '[' opens an ObjC call, determine whether all parameters fit
         // into one line and put one per line if they don't.
-        if (getLengthToMatchingParen(Current) + State.Column >
-            getColumnLimit(State))
+        unsigned length = (Style.ObjCAvoidBreaksForInlineBlocks
+                               ? getLengthToLineTerminator(Current)
+                               : getLengthToMatchingParen(Current));
+        if (length + State.Column > getColumnLimit(State))
           BreakBeforeParameter = true;
       } else {
         // For ColumnLimit = 0, we have to figure out whether there is or has to
@@ -992,7 +1010,7 @@ void ContinuationIndenter::moveStatePastScopeOpener(LineState &State,
              Tok && Tok != Current.MatchingParen; Tok = Tok->Next) {
           if (Tok->MustBreakBefore ||
               (Tok->CanBreakBefore && Tok->NewlinesBefore > 0)) {
-            BreakBeforeParameter = true;
+            BreakBeforeParameter = !Style.ObjCAvoidBreaksForInlineBlocks;
             break;
           }
         }

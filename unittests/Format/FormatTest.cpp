@@ -7603,6 +7603,17 @@ TEST_F(FormatTest, FormatObjCMethodDeclarations) {
                "            ofSize:(size_t)height\n"
                "                  :(size_t)width;",
                getLLVMStyleWithColumns(60));
+
+  // Ensure blocks are formatted correctly when we don't want to break parameters.
+  FormatStyle blockBreakStyle = getLLVMStyle();
+  blockBreakStyle.ObjCAvoidBreaksForInlineBlocks = true;
+  blockBreakStyle.ObjCBlockIndentWidth = 4;
+  verifyFormat("[UIView animateWithDuration:1.0 animations:^{\n"
+               "    NSLog();\n"
+               "} completion:^(BOOL finished) {\n"
+               "    NSLog();\n"
+               "}];",
+               blockBreakStyle);
 }
 
 TEST_F(FormatTest, FormatObjCMethodExpr) {

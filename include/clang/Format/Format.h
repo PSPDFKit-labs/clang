@@ -497,6 +497,10 @@ struct FormatStyle {
   /// \brief The indentation used for namespaces.
   NamespaceIndentationKind NamespaceIndentation;
 
+  /// \brief Avoid inserting line breaks when calculating the length of lines
+  /// with inline Objective-C blocks.
+  bool ObjCAvoidBreaksForInlineBlocks;
+
   /// \brief The number of characters to use for indentation of ObjC blocks.
   unsigned ObjCBlockIndentWidth;
 
@@ -689,6 +693,7 @@ struct FormatStyle {
            MacroBlockEnd == R.MacroBlockEnd &&
            MaxEmptyLinesToKeep == R.MaxEmptyLinesToKeep &&
            NamespaceIndentation == R.NamespaceIndentation &&
+           ObjCAvoidBreaksForInlineBlocks == R.ObjCAvoidBreaksForInlineBlocks &&
            ObjCBlockIndentWidth == R.ObjCBlockIndentWidth &&
            ObjCSpaceAfterProperty == R.ObjCSpaceAfterProperty &&
            ObjCSpaceBeforeProtocolList == R.ObjCSpaceBeforeProtocolList &&
